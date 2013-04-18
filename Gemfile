@@ -42,7 +42,10 @@ group :development, :test do
 end
 
 group :test do
+  gem 'turn'
   gem 'shoulda'
-  gem 'mocha'
+  gem 'mocha', :require => 'mocha/api'
   gem 'capybara'
+  gem 'ansi'
+  gem 'autotest-rails'
 end
