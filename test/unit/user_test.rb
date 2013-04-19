@@ -124,4 +124,9 @@ class UserTest < ActiveSupport::TestCase
     @user.save
     assert_not_nil @user.hashed_password
   end
+
+  test "salt should be stored" do
+    @user.save
+    assert_not_nil @user.salt
+  end
 end

@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
 
   attr_protected :hashed_password, :salt
 
-  attr_accessor :password, :password_confirmation, :hashed_password
+  attr_accessor :password, :password_confirmation, :hashed_password, :salt
 
   before_save :hash_password
 
@@ -51,15 +51,17 @@ class User < ActiveRecord::Base
 
     digest = OpenSSL::Digest::SHA512.new
     digest_length = digest.digest_length
+    salt = User.new_salt
 
     pbkdf = OpenSSL::PKCS5.pbkdf2_hmac(
       @password,
-      User.new_salt,
+      salt,
       PBKDF_ITERATIONS,
       digest_length,
       digest
     )
 
+    @salt = salt
     @hashed_password = Base64.encode64 pbkdf
   end
 
