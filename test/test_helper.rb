@@ -20,7 +20,7 @@ class ActionDispatch::IntegrationTest
 end
 
 Turn.config.format = :pretty
-Turn.config.verbose = true
 Turn.config.ansi = true
+Turn.config.trace = 3
 
 require 'mocha/setup'

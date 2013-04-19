@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
 
   attr_accessor :password, :password_confirmation, :hashed_password, :salt
 
-  before_save :hash_password
+  before_save :update_hashed_password
 
   validates_presence_of :username
   validates_presence_of :email
@@ -40,29 +40,34 @@ class User < ActiveRecord::Base
   validates_format_of :email, 
     with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/
 
+  def update_hashed_password
+    result = self.hash_password(@password)
+    @salt = result[:salt]
+    @hashed_password = result[:hashed_password]
+  end
+
   def self.new_salt
     SecureRandom.base64 SALT_BYTES
   end
 
-  def hash_password(password=nil)
+  def hash_password(password = nil, salt = nil)
     password ||= @password
+    salt ||= User.new_salt
 
     raise RuntimeError, "Password needed for hash" if password == nil
 
     digest = OpenSSL::Digest::SHA512.new
     digest_length = digest.digest_length
-    salt = User.new_salt
 
     pbkdf = OpenSSL::PKCS5.pbkdf2_hmac(
-      @password,
+      password.to_s,
       salt,
       PBKDF_ITERATIONS,
       digest_length,
       digest
     )
 
-    @salt = salt
-    @hashed_password = Base64.encode64 pbkdf
+    return { salt: salt, hashed_password: Base64.encode64(pbkdf) }
   end
 
   def slow_equals(a, b)
@@ -86,5 +91,12 @@ class User < ActiveRecord::Base
 
     is_match = false unless a_bytes.count == b_bytes.count
     is_match
+  end
+
+  def validate_password(input = nil)
+    raise RuntimeError if !input
+
+    hashed_input = hash_password(input, @salt)
+    slow_equals(hashed_input[:hashed_password], @hashed_password) 
   end
 end

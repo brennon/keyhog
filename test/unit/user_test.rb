@@ -38,7 +38,7 @@ class UserTest < ActiveSupport::TestCase
   should_not allow_mass_assignment_of(:hashed_password)
   should_not allow_mass_assignment_of(:salt)
 
-  test "should salt passwords" do
+  test "generates password salts" do
     assert_respond_to User, :new_salt
   end
 
@@ -55,7 +55,15 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "should return a string as a hashed password" do
-    assert_kind_of String, @user.hash_password(password: 'password')
+    assert_kind_of Hash, @user.hash_password(password: 'password')
+  end
+
+  test "should return the salt in the hashed password hash" do
+    assert_not_nil @user.hash_password(password: 'password')[:salt]
+  end
+
+  test "should return the hashed password in the hashed password hash" do
+    assert_not_nil @user.hash_password(password: 'password')[:hashed_password]
   end
 
   test "should require a password to hash" do
@@ -66,21 +74,28 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "should return a 512-bit hashed password" do
-    assert_equal @user.hash_password('password').bytesize, 90
+    assert_equal @user.hash_password('password')[:hashed_password].bytesize, 90
   end
 
   test "should return different hashed passwords for the same input" do
-    password_a = @user.hash_password('password')
-    password_b = @user.hash_password('password')
+    password_a = @user.hash_password('password')[:hashed_password]
+    password_b = @user.hash_password('password')[:hashed_password]
     assert_not_equal password_a, password_b
   end
 
+  test "should return different salts for the same input" do
+    salt_a = @user.hash_password('password')[:salt]
+    salt_b = @user.hash_password('password')[:salt]
+    assert_not_equal salt_a, salt_b
+  end
+
   test "should return an ASCII string" do
-    assert_equal 'US-ASCII', @user.hash_password('password').encoding.name
+    assert_equal 'US-ASCII', 
+      @user.hash_password('password')[:hashed_password].encoding.name
   end
 
   test "should hash password when User is created" do
-    User.any_instance.expects(:hash_password)
+    User.any_instance.expects(:update_hashed_password)
     u = FactoryGirl.create(:user)
   end
 
@@ -103,17 +118,15 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "slow equals should take longer than a regular compare" do
-    100.times do
-      regular = Benchmark.realtime {
-        "a"*511+"b" == "b" + "a"*511
-      }
+    regular = Benchmark.realtime {
+      "a"*511+"b" == "b" + "a"*511
+    }
 
-      slow = Benchmark.realtime {
-        @user.slow_equals("a"*511+"b", "b"+"a"*511)
-      }
+    slow = Benchmark.realtime {
+      @user.slow_equals("a"*511+"b", "b"+"a"*511)
+    }
 
-      assert slow > regular
-    end
+    assert slow > regular
   end
 
   test "slow equals returns false for strings of differing lengths" do
@@ -128,5 +141,31 @@ class UserTest < ActiveSupport::TestCase
   test "salt should be stored" do
     @user.save
     assert_not_nil @user.salt
+  end
+
+  test "validate_password should return true for the correct password" do
+    @user.save
+    assert @user.validate_password(@user.password)
+  end
+
+  test "validate_password should return false with an incorrect password" do
+    @user.save
+    assert !@user.validate_password("INVALID")
+  end
+
+  test "should respond to validate_password" do
+    assert_respond_to @user, :validate_password
+  end
+
+  test "validate_password raises an error with a nil parameter" do
+    assert_raise RuntimeError do
+      @user.validate_password nil
+    end
+  end
+
+  test "validate_password uses slow_equals" do
+    @user.save
+    @user.expects(:slow_equals)
+    @user.validate_password(@user.password)
   end
 end
