@@ -19,7 +19,8 @@ class ActionDispatch::IntegrationTest
   include Capybara::DSL
 end
 
-Turn.config.format = :progress
+Turn.config.format = :pretty
+Turn.config.verbose = true
 Turn.config.ansi = true
 
 require 'mocha/setup'

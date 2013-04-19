@@ -45,7 +45,10 @@ group :test do
   gem 'turn'
   gem 'shoulda'
   gem 'mocha', :require => 'mocha/api'
+  gem 'launchy'
   gem 'capybara'
   gem 'ansi'
+  gem 'autotest-standalone'
   gem 'autotest-rails'
+  gem 'autotest-growl'
 end
