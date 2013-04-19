@@ -22,10 +22,11 @@ class UsersControllerTest < ActionController::TestCase
         username: @user.username,
         email: @user.email,
         first_name: @user.first_name,
-        last_name: @user.last_name
+        last_name: @user.last_name,
+        password: @user.password,
+        password_confirmation: @user.password_confirmation
       }
     end
-
     assert_redirected_to user_path(assigns(:user))
   end
 
@@ -43,7 +44,11 @@ class UsersControllerTest < ActionController::TestCase
 
   test "should update user" do
     @user.save
-    put :update, id: @user, user: { email: @user.email, username: @user.username }
+    put :update, id: @user, user: { 
+      email: @user.email, 
+      username: @user.username,
+      password: @user.password
+    }
     assert_redirected_to user_path(assigns(:user))
   end
 
