@@ -33,3 +33,4 @@ rerun.txt
 pickle-email-*.html
 .project
 *.swp
+.DS_Store

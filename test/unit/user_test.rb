@@ -20,4 +20,16 @@ class UserTest < ActiveSupport::TestCase
   should_not allow_value('bob@example').for(:email)
   should_not allow_value('bob').for(:email)
   should_not allow_value('bob@example com').for(:email)
+
+  test "should salt passwords" do
+    assert_respond_to User, :salt
+  end
+
+  test "should return a string as a salt" do
+    assert_kind_of String, User.salt
+  end
+
+  test "should return at least a 256-bit string as a salt" do
+    assert User.salt.bytesize >= 32
+  end
 end
