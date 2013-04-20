@@ -17,12 +17,12 @@ class User < ActiveRecord::Base
     :first_name, 
     :last_name, 
     :password, 
-    :password_confirmation
+    :password_confirmation,
   )
 
-  attr_protected :hashed_password, :salt
+  # attr_protected :password_digest, :salt
 
-  attr_accessor :password, :password_confirmation, :hashed_password, :salt
+  attr_accessor :password, :password_confirmation
 
   before_save :update_hashed_password
 
@@ -31,6 +31,8 @@ class User < ActiveRecord::Base
   validates_presence_of :first_name
   validates_presence_of :last_name
   validates_presence_of :password
+  validates_presence_of :password_confirmation
+  validates_confirmation_of :password
 
   validates_uniqueness_of :username
   validates_uniqueness_of :email
@@ -40,10 +42,30 @@ class User < ActiveRecord::Base
   validates_format_of :email, 
     with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/
 
+  validate :check_password_requirements
+
+  def check_password_requirements
+    unless @password =~ /.*?[a-z].*?[a-z].*?/
+      errors.add :password, 'must contain at least two lowercase letters'
+    end
+
+    unless @password =~ /.*?[A-Z].*?[A-Z].*?/
+      errors.add :password, 'must contain at least two uppercase letters'
+    end
+
+    unless @password =~ /.*?\d.*?\d.*?/
+      errors.add :password, 'must contain at least two numbers'
+    end
+
+    unless @password =~ /.*?\W.*?\W.*?/
+      errors.add :password, 'must contain at least two special characters'
+    end
+  end
+
   def update_hashed_password
     result = self.hash_password(@password)
-    @salt = result[:salt]
-    @hashed_password = result[:hashed_password]
+    self.salt = result[:salt]
+    self.hashed_password = result[:hashed_password]
   end
 
   def self.new_salt
@@ -96,7 +118,7 @@ class User < ActiveRecord::Base
   def validate_password(input = nil)
     raise RuntimeError if !input
 
-    hashed_input = hash_password(input, @salt)
-    slow_equals(hashed_input[:hashed_password], @hashed_password) 
+    hashed_input = hash_password(input, self.salt)
+    slow_equals(hashed_input[:hashed_password], self.hashed_password) 
   end
 end

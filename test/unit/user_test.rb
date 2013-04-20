@@ -12,6 +12,8 @@ class UserTest < ActiveSupport::TestCase
   should validate_presence_of :first_name
   should validate_presence_of :last_name
   should validate_presence_of :password
+  should validate_presence_of :password_confirmation
+  should validate_confirmation_of :password
 
   # Unique attributes
   should validate_uniqueness_of :username
@@ -31,8 +33,12 @@ class UserTest < ActiveSupport::TestCase
   #   - 2 lowercase letters
   #   - 2 uppercase letters
   #   - 2 numbers
-  #   - 2 symbols
+  #   - 2 special characters
   should allow_value('aB1!cD2@').for(:password)
+  should_not allow_value('AB1!CD2@').for(:password)
+  should_not allow_value('ab1!cd2@').for(:password)
+  should_not allow_value('aBa!cDc@').for(:password)
+  should_not allow_value('aBa1cDc2').for(:password)
 
   # Disallow mass assignments
   should_not allow_mass_assignment_of(:hashed_password)
@@ -167,5 +173,12 @@ class UserTest < ActiveSupport::TestCase
     @user.save
     @user.expects(:slow_equals)
     @user.validate_password(@user.password)
+  end
+
+  test "saves salt" do
+    @user.save
+    presave_salt = @user.salt
+    @user.reload
+    assert_equal presave_salt, @user.salt
   end
 end

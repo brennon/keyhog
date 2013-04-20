@@ -7,10 +7,19 @@ class UserSignupTest < ActionDispatch::IntegrationTest
     fill_in 'Last name', with: 'Thomas'
     fill_in 'Username', with: 'bthomas'
     fill_in 'Email', with: 'bob@example.com'
-    fill_in 'Password', with: '123fgh456'
-    fill_in 'Password confirmation', with: '123fgh456'
+    fill_in 'Password', with: 'aB1!cD2@'
+    fill_in 'Password confirmation', with: 'aB1!cD2@'
     click_button 'Create User'
     assert_equal user_path(User.find_by_username('bthomas')), current_path
+  end
+
+  test "registered users can log in" do
+    user = FactoryGirl.create(:user)
+    visit new_session_path
+    fill_in 'Email', with: user.email
+    fill_in 'Password', with: user.password
+    click_button 'Log In'
+    assert_equal root_path, current_path
   end
 end
 
