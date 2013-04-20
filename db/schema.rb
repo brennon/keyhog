@@ -11,9 +11,9 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130420163403) do
+ActiveRecord::Schema.define(:version => 20130420171649) do
 
-  create_table "keys", :force => true do |t|
+  create_table "certificates", :force => true do |t|
     t.integer  "user_id"
     t.text     "contents"
     t.string   "nickname"

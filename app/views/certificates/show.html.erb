@@ -1,20 +1,25 @@
-<p id="notice"><%= notice %></p>
+<%- model_class = Certificate -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => @certificate.nickname %></h1>
+</div>
 
-<p>
-  <b>Nickname:</b>
-  <%= @certificate.nickname %>
-</p>
+<dl class="dl-horizontal">
+  <dt><strong><%= model_class.human_attribute_name(:nickname) %>:</strong></dt>
+  <dd><%= @certificate.nickname %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:fingerprint) %>:</strong></dt>
+  <dd><%= @certificate.prettify_fingerprint(@certificate.fingerprint) %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:contents) %>:</strong></dt>
+  <dd class='long-text'><%= @certificate.contents %></dd>
+</dl>
 
-<p>
-  <b>Contents:</b>
-  <%= @certificate.contents %>
-</p>
-
-<p>
-  <b>Fingerprint:</b>
-  <%= @certificate.prettify_fingerprint(@certificate.fingerprint) %>
-</p>
-
-
-<%= link_to 'Edit', edit_user_certificate_path(@user, @certificate) %> |
-<%= link_to 'Back', user_certificates_path(@user) %>
+<div class="form-actions">
+  <%= link_to t('.back', :default => t("helpers.links.back")),
+              user_certificates_path, :class => 'btn'  %>
+  <%= link_to t('.edit', :default => t("helpers.links.edit")),
+              edit_user_certificate_path(@user, @certificate), :class => 'btn' %>
+  <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+              [@user, @certificate],
+              :method => 'delete',
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+              :class => 'btn btn-danger' %>
+</div>

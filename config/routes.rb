@@ -1,8 +1,7 @@
 Keyhog::Application.routes.draw do
-  resources :keys
-
-
-  resources :users
+  resources :users do
+    resources :certificates
+  end
   resources :sessions
 
   get 'signup', to: 'users#new', as: 'signup'

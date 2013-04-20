@@ -44,6 +44,8 @@ class UserTest < ActiveSupport::TestCase
   should_not allow_mass_assignment_of(:hashed_password)
   should_not allow_mass_assignment_of(:salt)
 
+  should have_many :certificates
+
   test "generates password salts" do
     assert_respond_to User, :new_salt
   end

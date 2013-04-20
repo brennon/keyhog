@@ -1,12 +1,9 @@
-<%= simple_form_for([@user, @certificate]) do |f| %>
-  <%= f.error_notification %>
-
-  <div class="form-inputs">
-    <%= f.input :nickname %>
-    <%= f.input :contents %>
-  </div>
-
+<%= simple_form_for [@user, @certificate], :html => { :class => 'form-horizontal' } do |f| %>
+  <%= f.input :nickname, input_html: { class: 'input-xxlarge' } %>
+  <%= f.input :contents, input_html: { class: 'input-xxlarge' } %>
   <div class="form-actions">
-    <%= f.button :submit %>
+    <%= f.button :submit, :class => 'btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                user_certificates_path(@user), :class => 'btn' %>
   </div>
 <% end %>

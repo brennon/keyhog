@@ -20,9 +20,9 @@ class User < ActiveRecord::Base
     :password_confirmation,
   )
 
-  # attr_protected :password_digest, :salt
-
   attr_accessor :password, :password_confirmation
+
+  has_many :certificates
 
   before_save :update_hashed_password
 
