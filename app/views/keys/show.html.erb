@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>User:</b>
+  <%= @key.user_id %>
+</p>
+
+<p>
+  <b>Contents:</b>
+  <%= @key.contents %>
+</p>
+
+<p>
+  <b>Nickname:</b>
+  <%= @key.nickname %>
+</p>
+
+<p>
+  <b>Fingerprint:</b>
+  <%= @key.fingerprint %>
+</p>
+
+
+<%= link_to 'Edit', edit_key_path(@key) %> |
+<%= link_to 'Back', keys_path %>

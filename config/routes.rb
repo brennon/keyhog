@@ -1,4 +1,7 @@
 Keyhog::Application.routes.draw do
+  resources :keys
+
+
   resources :users
   resources :sessions
 

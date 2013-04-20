@@ -1,0 +1,29 @@
+<h1>Listing keys</h1>
+
+<table>
+  <tr>
+    <th>User</th>
+    <th>Contents</th>
+    <th>Nickname</th>
+    <th>Fingerprint</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @keys.each do |key| %>
+  <tr>
+    <td><%= key.user_id %></td>
+    <td><%= key.contents %></td>
+    <td><%= key.nickname %></td>
+    <td><%= key.fingerprint %></td>
+    <td><%= link_to 'Show', key %></td>
+    <td><%= link_to 'Edit', edit_key_path(key) %></td>
+    <td><%= link_to 'Destroy', key, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Key', new_key_path %>
