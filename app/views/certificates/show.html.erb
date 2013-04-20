@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Nickname:</b>
+  <%= @certificate.nickname %>
+</p>
+
+<p>
+  <b>Contents:</b>
+  <%= @certificate.contents %>
+</p>
+
+<p>
+  <b>Fingerprint:</b>
+  <%= @certificate.prettify_fingerprint(@certificate.fingerprint) %>
+</p>
+
+
+<%= link_to 'Edit', edit_user_certificate_path(@user, @certificate) %> |
+<%= link_to 'Back', user_certificates_path(@user) %>

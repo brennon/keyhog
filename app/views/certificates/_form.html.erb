@@ -1,0 +1,12 @@
+<%= simple_form_for([@user, @certificate]) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :nickname %>
+    <%= f.input :contents %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>
