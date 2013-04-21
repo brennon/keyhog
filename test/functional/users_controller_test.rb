@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'json'
 
 class UsersControllerTest < ActionController::TestCase
   setup do
@@ -8,8 +9,6 @@ class UsersControllerTest < ActionController::TestCase
   test "should get index" do
     get :index
     assert_redirected_to root_url
-    # assert_response :success
-    # assert_not_nil assigns(:users)
   end
 
   test "should get new" do
@@ -38,6 +37,19 @@ class UsersControllerTest < ActionController::TestCase
     get :show, id: @user
     assert_response :success
   end
+
+#  test "should show user JSON" do
+#    @user = FactoryGirl.create(:user) 
+#    session[:user_id] = @user.id
+#
+#    get :show, id: @user, format: :json
+#    json = JSON.parse(response.body)
+#    puts json
+#    assert_nil json['created_at']
+#    assert_nil json['updated_at']
+#    assert_nil json['salt']
+#    assert_nil json['hashed_password']
+#  end
 
   test "should get edit" do
     @user.save

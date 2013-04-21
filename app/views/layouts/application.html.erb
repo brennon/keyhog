@@ -22,8 +22,9 @@
         <a class="brand" href="#">Keyhog</a>
         <div class="nav-collapse">
           <ul class="nav">
-            <li><%= link_to "Users", users_path %></li>
             <% if current_user %>
+              <li><%= link_to 'Profile', current_user %></li>
+              <li><%= link_to 'Certificates', user_certificates_path(current_user) %></li>
               <li><%= link_to 'Log Out', logout_path %></li>
             <% else %>
               <li><%= link_to 'Log In', login_path %></li>

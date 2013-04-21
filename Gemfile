@@ -58,4 +58,5 @@ group :test do
   gem 'autotest-standalone'
   gem 'autotest-rails'
   gem 'autotest-growl'
+  # gem 'selenium-webdriver'
 end
