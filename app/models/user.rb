@@ -97,9 +97,9 @@ class User < ActiveRecord::Base
 #      digest
 #    )
     ENV['ARMOR_ITER'] = '1000'
-    digest = Armor.digest(password.to_s, salt.to_s).to_s
+    digest = Armor.digest(password.to_s, salt.to_s)
 
-    return { salt: salt.to_s, hashed_password: digest.to_s }
+    return { salt: salt, hashed_password: digest }
   end
 
   def slow_equals(a, b)
@@ -108,8 +108,8 @@ class User < ActiveRecord::Base
 
     is_match = true
 
-    a_bytes = a.bytes
-    b_bytes = b.bytes
+    a_bytes = a.bytes.to_a
+    b_bytes = b.bytes.to_a
 
     if a_bytes.count < b_bytes.count
       count = a_bytes.count
