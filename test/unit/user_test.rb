@@ -82,7 +82,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "should return a 512-bit hashed password" do
-    assert_equal @user.hash_password('password')[:hashed_password].bytesize, 90
+    assert_equal 128, @user.hash_password('password')[:hashed_password].bytesize
   end
 
   test "should return different hashed passwords for the same input" do
