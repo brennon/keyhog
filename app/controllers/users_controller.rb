@@ -18,13 +18,10 @@ class UsersController < ApplicationController
   def show
     @user = User.includes(:certificates).find(params[:id])
 
-    puts "certificates: #{@user.certificates.count}"
-    puts @user.certificates
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @user, only: [:username, :first_name, :last_name, :certificates], include: :certificates }
-    end
+#    respond_to do |format|
+#      format.html # show.html.erb
+#      format.json { render json: @user, only: [:username, :first_name, :last_name, :certificates], include: :certificates }
+#    end
   end
 
   # GET /users/new

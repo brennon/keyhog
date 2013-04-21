@@ -4,6 +4,13 @@ Keyhog::Application.routes.draw do
   end
   resources :sessions
 
+  namespace :api, defaults: { format: 'json' } do
+    namespace :v1 do
+      match 'users/:username' => 'users#show'
+      match 'users/:username/:certificate_id' => 'users#show_certificate'
+    end
+  end
+
   get 'signup', to: 'users#new', as: 'signup'
   get 'login', to: 'sessions#new', as: 'login'
   get 'logout', to: 'sessions#destroy', as: 'logout'
