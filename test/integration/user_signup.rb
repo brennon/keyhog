@@ -15,6 +15,7 @@ class UserSignupTest < ActionDispatch::IntegrationTest
 
   test "registered users can log in" do
     user = FactoryGirl.create(:user)
+    visit logout_path
     visit new_session_path
     fill_in 'Email', with: user.email
     fill_in 'Password', with: user.password

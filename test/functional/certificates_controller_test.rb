@@ -28,27 +28,32 @@ class CertificatesControllerTest < ActionController::TestCase
   end
 
   test "should show certificate" do
-    @certificate.save
-    get :show, id: @certificate, user_id: @user.id
+    session[:user_id] = @user.id
+    certificate = FactoryGirl.create(:certificate, user_id: @user.id)
+    get :show, id: certificate, user_id: @user.id
     assert_response :success
   end
 
   test "should get edit" do
-    @certificate.save
-    get :edit, id: @certificate, user_id: @user.id
+    session[:user_id] = @user.id
+    certificate = FactoryGirl.create(:certificate, user_id: @user.id)
+    get :edit, id: certificate, user_id: @user.id
     assert_response :success
   end
 
   test "should update certificate" do
-    @certificate.save
-    put :update, id: @certificate, certificate: { contents: @certificate.contents, fingerprint: @certificate.fingerprint, nickname: @certificate.nickname, user_id: @certificate.user_id }, user_id: @user.id
+    session[:user_id] = @user.id
+    certificate = FactoryGirl.create(:certificate, user_id: @user.id)
+    put :update, id: certificate, certificate: { contents: certificate.contents, fingerprint: certificate.fingerprint, nickname: certificate.nickname, user_id: certificate.user_id }, user_id: @user.id
     assert_redirected_to user_certificate_path(@user, assigns(:certificate))
   end
 
   test "should destroy certificate" do
-    @certificate.save
+    session[:user_id] = @user.id
+    certificate = FactoryGirl.create(:certificate, user_id: @user.id)
+
     assert_difference('Certificate.count', -1) do
-      delete :destroy, id: @certificate, user_id: @user.id
+      delete :destroy, id: certificate, user_id: @user.id
     end
 
     assert_redirected_to user_certificates_path(@user)

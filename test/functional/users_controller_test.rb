@@ -7,8 +7,9 @@ class UsersControllerTest < ActionController::TestCase
 
   test "should get index" do
     get :index
-    assert_response :success
-    assert_not_nil assigns(:users)
+    assert_redirected_to root_url
+    # assert_response :success
+    # assert_not_nil assigns(:users)
   end
 
   test "should get new" do
@@ -32,18 +33,24 @@ class UsersControllerTest < ActionController::TestCase
 
   test "should show user" do
     @user.save
+    session[:user_id] = @user.id
+
     get :show, id: @user
     assert_response :success
   end
 
   test "should get edit" do
     @user.save
+    session[:user_id] = @user.id
+
     get :edit, id: @user
     assert_response :success
   end
 
   test "should update user" do
     @user.save
+    session[:user_id] = @user.id
+
     put :update, id: @user, user: { 
       email: @user.email, 
       username: @user.username,
@@ -55,6 +62,8 @@ class UsersControllerTest < ActionController::TestCase
 
   test "should destroy user" do
     @user.save
+    session[:user_id] = @user.id
+
     assert_difference('User.count', -1) do
       delete :destroy, id: @user
     end
