@@ -78,24 +78,6 @@ class User < ActiveRecord::Base
 
     raise RuntimeError, "Password needed for hash" if password == nil
 
-#    digest = OpenSSL::Digest::SHA512.new
-#    digest_length = digest.digest_length
-
-#    pbkdf = PBKDF2.new(
-#      password: password, 
-#      salt: salt, 
-#      iterations: PBKDF_ITERATIONS, 
-#      hash_function: OpenSSL::Digest::SHA512, 
-#      key_length: digest_length
-#    )
-
-#    pbkdf = OpenSSL::PKCS5.pbkdf2_hmac(
-#      password.to_s,
-#      salt,
-#      PBKDF_ITERATIONS,
-#      digest_length,
-#      digest
-#    )
     ENV['ARMOR_ITER'] = '1000'
     digest = Armor.digest(password.to_s, salt.to_s)
 
