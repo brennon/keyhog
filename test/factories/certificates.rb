@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
   factory :certificate do
-    sequence(:contents) { |i| "ssh-rsa #{i} nickname" }
+    sequence(:contents) { |i| "ssh-rsa1 #{i} nickname" }
     sequence(:fingerprint) { |i| "Certificate Fingerprint #{i}" }
     sequence(:nickname) { |i| "Certificate Nickname #{i}" }
     user

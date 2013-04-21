@@ -12,6 +12,7 @@ gem 'simple_form'
 gem 'armor'
 gem 'cancan'
 gem 'rabl'
+gem 'doorkeeper'
 
 # Gems used only for assets and not required
 # in production environments by default.

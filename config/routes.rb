@@ -1,4 +1,6 @@
 Keyhog::Application.routes.draw do
+  use_doorkeeper
+
   resources :users do
     resources :certificates
   end
@@ -6,8 +8,8 @@ Keyhog::Application.routes.draw do
 
   namespace :api, defaults: { format: 'json' } do
     namespace :v1 do
-      match 'users/:username' => 'users#show'
-      match 'users/:username/:certificate_id' => 'users#show_certificate'
+      match 'user' => 'users#show'
+      match 'user/certificates/:certificate_id' => 'users#show_certificate'
     end
   end
 

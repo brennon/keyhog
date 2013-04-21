@@ -4,12 +4,16 @@ require 'json'
 class ApiControllerTest < ActionController::TestCase
   setup do
     @controller = Api::V1::UsersController.new
+    @token = Object.new
+    @token.stubs(:accessible?).returns(true)
+    @controller.stubs(:doorkeeper_token).returns(@token)
   end
 
   test "show a certificate" do
     user = FactoryGirl.create(:user)
+    session[:user_id] = user.id
     get :show_certificate, 
-      username: user.username, 
+      id: user.id, 
       certificate_id: user.certificates.first.id
     certificate = user.certificates.first
     json = JSON.parse(response.body)['certificate']
@@ -24,7 +28,8 @@ class ApiControllerTest < ActionController::TestCase
 
   test "show a user" do
     user = FactoryGirl.create(:user)
-    get :show, username: user.username
+    session[:user_id] = user.id
+    get :show, id: user.id
     json = JSON.parse(response.body)['user']
     assert_not_nil json['username']
     assert_not_nil json['first_name']

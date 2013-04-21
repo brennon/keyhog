@@ -3,7 +3,7 @@ require 'openssl'
 require 'base64'
 
 class User < ActiveRecord::Base
-  SALT_BYTES = 32
+  SALT_BYTES = 64
 
   if Rails.env == 'test'
     PBKDF_ITERATIONS = 1

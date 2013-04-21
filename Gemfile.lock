@@ -55,6 +55,8 @@ GEM
       execjs
     coffee-script-source (1.6.2)
     commonjs (0.2.6)
+    doorkeeper (0.6.7)
+      railties (~> 3.1)
     erubis (2.7.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
@@ -171,6 +173,7 @@ DEPENDENCIES
   cancan
   capybara
   coffee-rails (~> 3.2.1)
+  doorkeeper
   factory_girl_rails
   jquery-rails
   launchy
