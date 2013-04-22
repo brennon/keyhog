@@ -5,6 +5,7 @@ module Api
       respond_to :json
 
       def show
+        # puts doorkeeper_token.application.name
         @user = User.includes(:certificates).find(current_user)
         render "api/users/show"
       end

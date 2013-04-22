@@ -25,7 +25,6 @@ class ApiControllerTest < ActionController::TestCase
     assert_equal certificate.updated_at.utc.iso8601, json['updated_at']
   end
 
-
   test "show a user" do
     user = FactoryGirl.create(:user)
     session[:user_id] = user.id
