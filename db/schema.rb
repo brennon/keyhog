@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130421191717) do
+ActiveRecord::Schema.define(:version => 20130422020056) do
 
   create_table "certificates", :force => true do |t|
     t.integer  "user_id"
@@ -20,6 +20,12 @@ ActiveRecord::Schema.define(:version => 20130421191717) do
     t.string   "fingerprint"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+  end
+
+  create_table "external_sites", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "oauth_access_grants", :force => true do |t|
@@ -60,6 +66,13 @@ ActiveRecord::Schema.define(:version => 20130421191717) do
   end
 
   add_index "oauth_applications", ["uid"], :name => "index_oauth_applications_on_uid", :unique => true
+
+  create_table "site_authorizations", :force => true do |t|
+    t.integer  "certificate_id"
+    t.integer  "external_site_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
 
   create_table "users", :force => true do |t|
     t.string   "username"
