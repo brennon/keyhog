@@ -94,5 +94,15 @@ class UserSignupTest < ActionDispatch::IntegrationTest
     assert_equal user_certificate_path(@user, @certificate), current_path
     assert page.has_content?('Certificate was successfully updated.')
   end
+
+  test "logging in redirects to original destination" do
+    user = FactoryGirl.create(:user)
+    logout_current_user
+    visit user_path(user)
+    fill_in 'Email', with: user.email
+    fill_in 'Password', with: user.password
+    click_button 'Log In'
+    assert_equal user_path(user), current_path
+  end
 end
 

@@ -2,9 +2,11 @@ require 'base64'
 require 'digest/md5'
 
 class Certificate < ActiveRecord::Base
-  attr_accessible :contents, :fingerprint, :nickname, :user_id
+  attr_accessible :contents, :fingerprint, :nickname, :user_id, :active
 
   belongs_to :user
+  has_many :site_authorizations
+  has_many :external_sites, through: :site_authorizations
 
   before_save :store_fingerprint
 

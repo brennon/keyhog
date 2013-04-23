@@ -2,6 +2,6 @@
 
 FactoryGirl.define do
   factory :external_site do
-    name "MyString"
+    name "Github"
   end
 end

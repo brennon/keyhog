@@ -2,7 +2,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_url, alert: exception.message
+    session[:return_to] = request.fullpath
+    redirect_to login_url, alert: exception.message
   end
 
   private

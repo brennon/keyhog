@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
 
   attr_accessor :password, :password_confirmation
 
-  has_many :certificates
+  has_many :certificates, dependent: :destroy
 
   before_save :update_hashed_password
 
@@ -78,8 +78,19 @@ class User < ActiveRecord::Base
 
     raise RuntimeError, "Password needed for hash" if password == nil
 
-    ENV['ARMOR_ITER'] = '1000'
-    digest = Armor.digest(password.to_s, salt.to_s)
+    if Rails.env == 'test'
+      iterations = 1
+    else
+      iterations = 5000
+    end
+
+    digest = SaltyDog::PBKDF2.digest(
+      digest: :sha512,
+      password: password,
+      salt: salt,
+      iterations: 1,
+      length: 64
+    )
 
     return { salt: salt, hashed_password: digest }
   end

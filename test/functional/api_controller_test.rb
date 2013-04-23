@@ -9,15 +9,59 @@ class ApiControllerTest < ActionController::TestCase
     @controller.stubs(:doorkeeper_token).returns(@token)
   end
 
+  test "check a certificate fingerprint with a good fingerprint" do
+    user = FactoryGirl.create(:user)
+    session[:user_id] = user.id
+    certificate = user.certificates.first
+
+    get :check_fingerprint, certificate_id: certificate.id, fingerprint: certificate.fingerprint
+    json = JSON.parse(response.body)
+    assert_equal 'valid fingerprint', json['result']
+  end
+
+  test "check a certificate fingerprint with a bad fingerprint" do
+    user = FactoryGirl.create(:user)
+    session[:user_id] = user.id
+    certificate = user.certificates.first
+
+    get :check_fingerprint, certificate_id: certificate.id, fingerprint: 'INVALID'
+    json = JSON.parse(response.body)
+    assert_equal 'invalid fingerprint', json['result']
+  end
+
+  test "deactivate a certificate" do
+    user = FactoryGirl.create(:user)
+    session[:user_id] = user.id
+    certificate = user.certificates.first
+
+    put :deactivate_certificate, certificate_id: certificate.id
+    certificate.reload
+    assert_equal false, certificate.active
+    json = JSON.parse(response.body)['certificate']
+    assert !json['active']
+  end
+
+  test "enable a site on a certificate" do
+    user = FactoryGirl.create(:user)
+    session[:user_id] = user.id
+    certificate = user.certificates.first
+    external_site = FactoryGirl.create(:external_site)
+    @token.stubs(:application).returns(stub(name: external_site.name))
+
+    put :enable_site, certificate_id: certificate.id
+    certificate.reload
+    assert_equal external_site, certificate.external_sites.first
+    json = JSON.parse(response.body)['certificate']['external_sites'][0]['external_site']
+    assert_equal external_site.name, json['name']
+  end
+
   test "show a certificate" do
     user = FactoryGirl.create(:user)
     session[:user_id] = user.id
     get :show_certificate, 
-      id: user.id, 
       certificate_id: user.certificates.first.id
     certificate = user.certificates.first
     json = JSON.parse(response.body)['certificate']
-    puts certificate.created_at.class.name
     assert_equal certificate.nickname, json['nickname']
     assert_equal certificate.contents, json['contents']
     assert_equal certificate.fingerprint, json['fingerprint']

@@ -10,6 +10,9 @@ Keyhog::Application.routes.draw do
     namespace :v1 do
       match 'user' => 'users#show'
       match 'user/certificates/:certificate_id' => 'users#show_certificate'
+      match 'user/certificates/:certificate_id/enable_site' => 'users#enable_site'
+      match 'user/certificates/:certificate_id/deactivate' => 'users#deactivate_certificate'
+      match 'user/certificates/:certificate_id/check_fingerprint' => 'users#check_fingerprint'
     end
   end
 

@@ -3,7 +3,7 @@ require 'benchmark'
 
 class UserTest < ActiveSupport::TestCase
   def setup
-    @user = FactoryGirl.create(:user)
+    @user ||= FactoryGirl.create(:user)
   end
 
   # Required attributes

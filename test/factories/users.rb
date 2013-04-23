@@ -10,7 +10,7 @@ FactoryGirl.define do
     password_confirmation "aB1!cD2@"
     
     ignore do
-      certificates_count 5
+      certificates_count 1
     end
 
     after(:create) do |user, evaluator|
