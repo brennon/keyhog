@@ -11,8 +11,8 @@ require 'oauth2'
 
 
 @callback = "urn:ietf:wg:oauth:2.0:oob"
-@app_id = "b3bf7e5505da7de34e893d5ec1016f9c628eaf9d868e6f1d72560bc1ea85087e"
-@secret = "30e22c98d02e04650e040b639839e9dfa21e2e70c313428d9aff513a6d1f8e05"
+@app_id = "a1beccd7094c3530811bdb4626518bb2e6c1150e3edc4b69ee3f9e62873b625a"
+@secret = "a41c626d46e527ad1ba736b22f32fff7482066d055ced8ccec8043e65c2c87a4"
 @client = OAuth2::Client.new(@app_id, @secret, site: "http://www.keyhog.com")
 
 def get_authorize_url
