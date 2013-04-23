@@ -7,6 +7,7 @@ class SessionsController < ApplicationController
     session[:return_to] = nil
     user = User.find_by_email(params[:email])
     if user && user.validate_password(params[:password])
+      reset_session
       session[:user_id] = user.id
       redirect_to url, notice: 'Logged in!'
     else
