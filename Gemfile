@@ -14,6 +14,8 @@ gem 'salty_dog'
 gem 'cancan'
 gem 'rabl'
 gem 'doorkeeper'
+gem 'faker'
+gem 'sshkey'
 
 # Gems used only for assets and not required
 # in production environments by default.
