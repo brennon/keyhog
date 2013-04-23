@@ -14,7 +14,7 @@ class Certificate < ActiveRecord::Base
   validates_presence_of :nickname
   validates_presence_of :user_id
 
-  validates_format_of :contents, with: /\Assh-(rsa1|rsa|dsa) \S* \S*\z/
+  validates_format_of :contents, with: /\Assh-(rsa1|rsa|dsa|dss) \S* \S*/
 
   validates_uniqueness_of :nickname
 
