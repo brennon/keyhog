@@ -5,12 +5,6 @@ require 'base64'
 class User < ActiveRecord::Base
   SALT_BYTES = 64
 
-  if Rails.env == 'test'
-    PBKDF_ITERATIONS = 1
-  else
-    PBKDF_ITERATIONS = 20000
-  end
-
   attr_accessible(
     :email,
     :username,
@@ -88,7 +82,7 @@ class User < ActiveRecord::Base
       digest: :sha512,
       password: password,
       salt: salt,
-      iterations: 1,
+      iterations: iterations,
       length: 64
     )
 
