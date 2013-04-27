@@ -48,8 +48,25 @@ class CertificatesControllerTest < ActionController::TestCase
   test "should update certificate" do
     session[:user_id] = @user.id
     certificate = FactoryGirl.create(:certificate, user_id: @user.id)
-    put :update, id: certificate, certificate: { contents: certificate.contents, fingerprint: certificate.fingerprint, nickname: certificate.nickname, user_id: certificate.user_id }, user_id: @user.id
+    put :update, id: certificate, certificate: {
+      contents: certificate.contents,
+      fingerprint: certificate.fingerprint,
+      nickname: certificate.nickname,
+      user_id: certificate.user_id
+    }, user_id: @user.id
     assert_redirected_to user_certificate_path(@user, assigns(:certificate))
+  end
+
+  test "should re-render certificate form with bad update params" do
+    session[:user_id] = @user.id
+    certificate = FactoryGirl.create(:certificate, user_id: @user.id)
+    put :update, id: certificate, certificate: {
+      contents: nil,
+      fingerprint: certificate.fingerprint,
+      nickname: certificate.nickname,
+      user_id: certificate.user_id
+    }, user_id: @user.id
+    assert_template 'edit'
   end
 
   test "should destroy certificate" do
