@@ -56,13 +56,15 @@ end
 group :test do
   gem 'turn'
   gem 'shoulda'
-  gem 'mocha', :require => 'mocha/api'
+  gem 'mocha', require: 'mocha/api'
   gem 'launchy'
   gem 'capybara'
   gem 'ansi'
   gem 'autotest-standalone'
   gem 'autotest-rails'
   gem 'autotest-growl'
+  gem 'cucumber-rails', require: false
+  gem 'database_cleaner'
   gem 'metric_fu'
   gem 'simplecov'
   # gem 'selenium-webdriver'
