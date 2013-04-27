@@ -37,6 +37,7 @@ task fake_data: :environment do
         unless certificate.external_sites.find_by_name(site.name)
           certificate.external_sites << site
         end
+      end
 
       user.certificates << certificate
       user.save

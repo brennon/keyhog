@@ -38,19 +38,6 @@ class UsersControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-#  test "should show user JSON" do
-#    @user = FactoryGirl.create(:user) 
-#    session[:user_id] = @user.id
-#
-#    get :show, id: @user, format: :json
-#    json = JSON.parse(response.body)
-#    puts json
-#    assert_nil json['created_at']
-#    assert_nil json['updated_at']
-#    assert_nil json['salt']
-#    assert_nil json['hashed_password']
-#  end
-
   test "should get edit" do
     @user.save
     session[:user_id] = @user.id
@@ -70,16 +57,5 @@ class UsersControllerTest < ActionController::TestCase
       password_confirmation: @user.password_confirmation
     }
     assert_redirected_to user_path(assigns(:user))
-  end
-
-  test "should destroy user" do
-    @user.save
-    session[:user_id] = @user.id
-
-    assert_difference('User.count', -1) do
-      delete :destroy, id: @user
-    end
-
-    assert_redirected_to users_path
   end
 end

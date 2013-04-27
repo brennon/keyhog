@@ -1,7 +1,7 @@
 Keyhog::Application.routes.draw do
   use_doorkeeper
 
-  resources :users do
+  resources :users, except: [:destroy] do
     resources :certificates
   end
   resources :sessions

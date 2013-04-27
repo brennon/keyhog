@@ -1,11 +1,14 @@
-require 'simplecov'
-SimpleCov.start 'rails'
-
 ENV["RAILS_ENV"] = "test"
+if ENV["COVERAGE"]
+  require 'simplecov'
+  SimpleCov.start 'rails' if ENV["COVERAGE"]
+end
+
 require File.expand_path('../../config/environment', __FILE__)
+
 require 'rails/test_help'
 require 'capybara/rails'
-require 'turn/autorun'
+require 'mocha/setup'
 
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.(yml|csv) for all tests in alphabetical order.
@@ -21,9 +24,3 @@ class ActionDispatch::IntegrationTest
   # Make the Capybara DSL available in all integration tests
   include Capybara::DSL
 end
-
-Turn.config.format = :pretty
-Turn.config.ansi = true
-Turn.config.trace = 3
-
-require 'mocha/setup'

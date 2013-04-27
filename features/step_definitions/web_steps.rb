@@ -1,6 +1,4 @@
 require 'uri'
-require 'shoulda-matchers'
-# require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "paths"))
 
 Given /^pending$/ do
   # Essentially allows marking an entire scenario as "pending", as opposed to just a single step
@@ -15,7 +13,7 @@ Then /^debug$/ do
 end
 
 When /^(?:|I )fill in "([^\"]*)" with "([^\"]*)"$/ do |field, value|
-  fill_in(field, :with => value)
+  fill_in field, with: value
 end
 
 When /^I select "([^\"]*)" from "([^\"]*)"$/ do |value, dropdown|
@@ -90,6 +88,17 @@ Given /^(?:|I )go to (.+)$/ do |page_name|
   case page_name
   when 'the home page'
     visit root_path
+  when 'the sign up page'
+    visit signup_path
+  when 'the login page'
+    visit login_path
+  when 'the logout page'
+    visit logout_path
+  when /the user page for "(.+)"/
+    user = User.find_by_username($1)
+    visit user_path(user)
+  else
+    pending
   end
 end
 
@@ -98,7 +107,13 @@ Then /^(?:|I )should be on (.+)$/ do |page_name|
   if defined?(Spec::Rails::Matchers)
     current_path.should == path_to(page_name)
   else
-    assert_equal path_to(page_name), current_path
+    case page_name
+    when 'the home page'
+      expected_path = root_path
+    else
+      pending
+    end
+    assert_equal expected_path, current_path
   end
 end
 
