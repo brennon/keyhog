@@ -11,6 +11,14 @@ class ApplicationControllerTest < ActionController::TestCase
     @controller = app_controller
   end
 
+  def do_bad_things
+    @user = FactoryGirl.create(:user)
+    session[:user_id] = nil
+    perform_action_with(UsersController) do
+      get :show, id: @user.id
+    end
+  end
+
   test ":current_user should return the logged-in user" do
     user = FactoryGirl.create(:user)
     perform_action_with(SessionsController) do
@@ -25,12 +33,18 @@ class ApplicationControllerTest < ActionController::TestCase
   end
 
   test "should redirect to the login URL on access denied" do
-    user = FactoryGirl.create(:user)
-    session[:user_id] = nil
-    perform_action_with(UsersController) do
-      get :show, id: user.id
-    end
+    do_bad_things
     assert_redirected_to login_path
+  end
+
+  test "should set flash on access denied" do
+    do_bad_things
+    assert_equal "You are not authorized to access this page.", flash[:alert]
+  end
+
+  test "should set return_to path on access denied" do
+    do_bad_things
+    assert_equal user_path(@user), session[:return_to]
   end
 end
 
