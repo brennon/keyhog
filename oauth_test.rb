@@ -2,11 +2,8 @@ require 'oauth2'
 
 # 1. Logout current user
 # 2. Login another user
-# 3. Open irb
-# 4. load('oauth_test.rb')
-# 5. get_authorize_url
-# 6. Browse to URL
-# 7. Copy code
+# 3. Click Authorize link
+# 4. Copy code
 # 8. get_api_urls(code)
 
 

@@ -12,11 +12,11 @@ class User < ActiveRecord::Base
   end
 
   attr_accessible(
-    :email, 
-    :username, 
-    :first_name, 
-    :last_name, 
-    :password, 
+    :email,
+    :username,
+    :first_name,
+    :last_name,
+    :password,
     :password_confirmation,
   )
 
@@ -39,7 +39,7 @@ class User < ActiveRecord::Base
 
   validates_length_of :username, in: 6..24
 
-  validates_format_of :email, 
+  validates_format_of :email,
     with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/
 
   validate :check_password_requirements
@@ -122,6 +122,6 @@ class User < ActiveRecord::Base
     raise RuntimeError if !input
 
     hashed_input = hash_password(input, self.salt)
-    slow_equals(hashed_input[:hashed_password], self.hashed_password) 
+    slow_equals(hashed_input[:hashed_password], self.hashed_password)
   end
 end

@@ -63,6 +63,7 @@ group :test do
   gem 'autotest-standalone'
   gem 'autotest-rails'
   gem 'autotest-growl'
+  gem 'metric_fu'
   gem 'simplecov'
   # gem 'selenium-webdriver'
 end
