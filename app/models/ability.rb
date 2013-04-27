@@ -34,9 +34,5 @@ class Ability
     can [:read, :update, :destroy], User, id: user.id
     can :create, User
     can :manage, Certificate, user_id: user.id
-
-    if user.email == 'brennon@vt.edu'
-      can :manage, :all
-    end
   end
 end
