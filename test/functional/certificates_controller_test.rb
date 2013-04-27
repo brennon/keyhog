@@ -16,15 +16,19 @@ class CertificatesControllerTest < ActionController::TestCase
     get :new, user_id: @user.id
     assert_response :success
   end
-  
+
   test "should create certificate" do
     fresh_cert = FactoryGirl.build(:certificate, user: nil)
-    puts fresh_cert.user_id
     assert_difference('Certificate.count') do
       post :create, certificate: { contents: @certificate.contents, fingerprint: @certificate.fingerprint, nickname: @certificate.nickname }, user_id: @user.id
     end
 
     assert_redirected_to user_certificate_path(@user, assigns(:certificate))
+  end
+
+  test "should re-render new form with bad certificate parameters" do
+    post :create, certificate: nil, user_id: @user.id
+    assert_template 'new'
   end
 
   test "should show certificate" do
