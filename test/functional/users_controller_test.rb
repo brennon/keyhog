@@ -42,6 +42,18 @@ class UsersControllerTest < ActionController::TestCase
     assert_template 'new'
   end
 
+  test "should redisplay the edit form if user does not save" do
+    @user.save
+    session[:user_id] = @user.id
+
+    put :update, id: @user, user: { 
+      email: @user.email, 
+      username: nil,
+      password: @user.password,
+      password_confirmation: @user.password_confirmation
+    }
+    assert_template 'edit'
+  end
 
   test "should show user" do
     @user.save
