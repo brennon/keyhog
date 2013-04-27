@@ -183,4 +183,18 @@ class UserTest < ActiveSupport::TestCase
     @user.reload
     assert_equal presave_salt, @user.salt
   end
+
+  test "uses 5000 iterations in production mode" do
+    previous = Rails.env
+    Rails.env = 'not test'
+    SaltyDog::PBKDF2.expects(:digest).with(
+      digest: :sha512,
+      password: 'password',
+      salt: 'NaCl',
+      iterations: 5000,
+      length: 64
+    )
+    @user.hash_password('password','NaCl')
+    Rails.env = previous
+  end
 end
