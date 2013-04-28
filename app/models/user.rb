@@ -1,6 +1,7 @@
 require 'securerandom'
 require 'openssl'
 require 'base64'
+require 'sshkey'
 
 class User < ActiveRecord::Base
   SALT_BYTES = 64
@@ -117,5 +118,8 @@ class User < ActiveRecord::Base
 
     hashed_input = hash_password(input, self.salt)
     slow_equals(hashed_input[:hashed_password], self.hashed_password)
+  end
+
+  def certificate_pair
   end
 end

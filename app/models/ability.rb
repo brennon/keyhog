@@ -31,7 +31,7 @@ class Ability
 
     user ||= User.new
 
-    can [:read, :update, :destroy], User, id: user.id
+    can :manage, User, id: user.id
     can :create, User
     can :manage, Certificate, user_id: user.id
   end

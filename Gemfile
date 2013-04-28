@@ -13,6 +13,7 @@ gem 'doorkeeper'
 gem 'faker'
 gem 'sshkey'
 gem 'jquery-rails'
+gem 'sshkey'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'

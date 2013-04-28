@@ -1,0 +1,13 @@
+<%= simple_form_for :certificate_pair, url: user_pair_path(@user),
+  html: { class: 'form-horizontal' } do |f| %>
+  <%= f.input :type, as: :select, collection: %w{RSA DSA}, selected: 'RSA' %>
+  <%= f.input :length, collection: %w{1024 2048 4096}, selected: '2048' %>
+  <%= f.input :comment %>
+  <%= f.input :passphrase, required: false %>
+  <%= f.input :passphrase_confirmation, required: false %>
+  <div class="form-actions">
+    <%= f.button :submit, 'Generate Certificate Pair', :class => 'btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                users_path, :class => 'btn' %>
+  </div>
+<% end %>

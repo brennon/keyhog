@@ -83,4 +83,18 @@ class UsersControllerTest < ActionController::TestCase
     }
     assert_redirected_to user_path(assigns(:user))
   end
+
+  test "should render a new pair form" do
+    @user.save
+    session[:user_id] = @user.id
+    get :new_pair, id: @user
+    assert_response :success
+  end
+
+  test "should assign the user in new pair form" do
+    @user.save
+    session[:user_id] = @user.id
+    get :new_pair, id: @user
+    assert_equal @user, assigns(:user)
+  end
 end

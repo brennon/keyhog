@@ -52,4 +52,12 @@ class UsersController < ApplicationController
   def destroy
     # Don't delete users
   end
+
+  # GET /users/1/pair/new
+  def new_pair
+
+  end
+
+  def create_pair
+  end
 end

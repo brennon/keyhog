@@ -1,7 +1,6 @@
 Keyhog::Application.routes.draw do
   use_doorkeeper
 
-  resources :certificate_pairs
   resources :users, except: [:destroy] do
     resources :certificates
   end
@@ -20,6 +19,9 @@ Keyhog::Application.routes.draw do
   get 'signup', to: 'users#new', as: 'signup'
   get 'login', to: 'sessions#new', as: 'login'
   get 'logout', to: 'sessions#destroy', as: 'logout'
+
+  get 'users/:id/pair/new', to: 'users#new_pair', as: 'new_user_pair'
+  post 'users/:id/pair', to: 'users#create_pair', as: 'user_pair'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
