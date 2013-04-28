@@ -1,3 +1,5 @@
+require 'tempfile'
+
 class UsersController < ApplicationController
   load_and_authorize_resource
 
@@ -55,9 +57,71 @@ class UsersController < ApplicationController
 
   # GET /users/1/pair/new
   def new_pair
-
+    @user = User.find(params[:id])
   end
 
+  # POST /users/1/pair
   def create_pair
+    @user = User.find(params[:id])
+    if validate_pair_parameters
+      @pair = @user.generate_pair(
+        type: params[:certificate_pair][:type],
+        length: params[:certificate_pair][:length].to_i,
+        comment: params[:certificate_pair][:comment],
+        passphrase: params[:certificate_pair][:passphrase]
+      )
+
+      send_data(
+        @pair.private_key,
+        filename: "id_#{params[:certificate_pair][:type].downcase}.prv",
+        type: 'text/plain',
+        disposition: 'attachment',
+      )
+
+      @user.certificates << Certificate.new(
+        nickname: params[:certificate_pair][:comment],
+        active: true,
+        contents: @pair.ssh_public_key
+      )
+
+      @pair = nil
+    else
+      render 'new_pair'
+    end
+  end
+
+  def validate_pair_parameters
+    errors = []
+    cparms = params[:certificate_pair]
+
+    if !cparms
+      return false
+    end
+
+    [:comment, :type, :length, :passphrase].each do |s|
+      if !cparms[s] || cparms[s] == ''
+        errors << "A #{s.to_s} is required."
+      end
+    end
+
+    if cparms[:type] == 'DSA' && cparms[:length] != '1024'
+        errors << "DSA pairs can only be 1024 bits long."
+    end
+
+    if cparms[:passphrase] != cparms[:passphrase_confirmation]
+      errors << "Passphrase and passphrase confirmation must match."
+    end
+
+    if cparms[:passphrase] && cparms[:passphrase].length < 4
+      errors << "Passphrase must be at least four characters long."
+    end
+
+    if errors.count > 0
+      flash[:warn] = "Please correct the following errors: "
+      errors.each { |e| flash[:warn] << "#{e} " }
+      false
+    else
+      true
+    end
   end
 end

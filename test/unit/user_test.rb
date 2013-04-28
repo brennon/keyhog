@@ -197,8 +197,4 @@ class UserTest < ActiveSupport::TestCase
     @user.hash_password('password','NaCl')
     Rails.env = previous
   end
-
-  test "responds to :certificate_pair" do
-    assert_respond_to @user, :certificate_pair
-  end
 end

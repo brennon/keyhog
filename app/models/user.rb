@@ -120,6 +120,12 @@ class User < ActiveRecord::Base
     slow_equals(hashed_input[:hashed_password], self.hashed_password)
   end
 
-  def certificate_pair
+  def generate_pair(options = {})
+    SSHKey.generate(
+      type: options[:type],
+      bits: options[:length],
+      comment: options[:comment],
+      passphrase: options[:passphrase]
+    )
   end
 end

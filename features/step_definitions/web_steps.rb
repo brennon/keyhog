@@ -97,6 +97,9 @@ Given /^(?:|I )go to (.+)$/ do |page_name|
   when /the user page for "(.+)"/
     user = User.find_by_username($1)
     visit user_path(user)
+  when 'my certificates page'
+    user = User.find_by_username('sweetlovin')
+    visit user_certificates_path(user)
   else
     pending
   end

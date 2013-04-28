@@ -37,3 +37,8 @@ When(/^I attempt to delete the account for "(.*?)"$/) do |username|
   user = User.find_by_username(username)
   page.driver.submit :delete, user_path(user), {}
 end
+
+Then(/^the downloaded certificate should include "(.*?)"$/) do |content|
+  assert page.response_headers["Content-Disposition"] =~ /id_(r|d)sa\.prv/
+  assert page.source =~ /#{content}/
+end
