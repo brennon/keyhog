@@ -1,6 +1,7 @@
 Keyhog::Application.routes.draw do
   use_doorkeeper
 
+  resources :certificate_pairs
   resources :users, except: [:destroy] do
     resources :certificates
   end

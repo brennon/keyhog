@@ -4,7 +4,7 @@ class CertificateTest < ActiveSupport::TestCase
   setup do
     @certificate = FactoryGirl.create(:certificate)
   end
-  
+
   should validate_presence_of :contents
   should validate_presence_of :nickname
   should validate_presence_of :user_id
