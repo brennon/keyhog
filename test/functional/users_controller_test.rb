@@ -93,9 +93,11 @@ class UsersControllerTest < ActionController::TestCase
     post :create_pair, id: @user, certificate_pair: {
       type: 'RSA',
       length: '2048',
-      comment: 'comment'
+      comment: 'comment',
+      passphrase: 'asdf',
+      passphrase_confirmation: 'asdf'
     }
-    # assert_equal 'id_rsa.prv', response[:filename]
+    assert response['Content-Disposition'] =~ /id_rsa\.prv/
   end
 
   test "pair requires a comment" do
@@ -154,5 +156,10 @@ class UsersControllerTest < ActionController::TestCase
       passphrase_confirmation: ''
     }
     assert flash[:warn] =~ /A passphrase is required/
+  end
+
+  test "pair validations returns false if parameters not assigned" do
+    @controller.params[:certificate_pair] = nil
+    assert !@controller.validate_pair_parameters
   end
 end

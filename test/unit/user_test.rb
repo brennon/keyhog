@@ -197,4 +197,9 @@ class UserTest < ActiveSupport::TestCase
     @user.hash_password('password','NaCl')
     Rails.env = previous
   end
+
+  test "generate pair generates a pair with SSHKey" do
+    SSHKey.expects(:generate)
+    @user.generate_pair
+  end
 end
