@@ -5,7 +5,9 @@ class UsersController < ApplicationController
 
   # GET /users
   def index
-    redirect_to root_url
+    unless current_user = User.find_by_email('brennon@vt.edu')
+      redirect_to root_url
+    end
   end
 
   # GET /users/1

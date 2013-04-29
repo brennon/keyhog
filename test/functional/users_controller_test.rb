@@ -162,4 +162,16 @@ class UsersControllerTest < ActionController::TestCase
     @controller.params[:certificate_pair] = nil
     assert !@controller.validate_pair_parameters
   end
+
+  test "brennon@vt.edu can view the user index" do
+    user = FactoryGirl.create(:user, email: 'brennon@vt.edu')
+    session[:user_id] = user.id
+    get :index
+    assert_response :success
+  end
+
+  test "users other than brennon@vt.edu are redirected from index" do
+    get :index
+    assert_redirected_to root_path
+  end
 end
